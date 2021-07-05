@@ -1,30 +1,35 @@
 package it.mspc.vaccinedata.ui.home
 
-import android.content.res.AssetManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import it.mspc.vaccinedata.R
+import com.google.gson.reflect.TypeToken
+import it.mspc.vaccinedata.data.AnagraficaSummary
+import it.mspc.vaccinedata.data.Platea
 import it.mspc.vaccinedata.databinding.FragmentHomeBinding
-import it.mspc.vaccinedata.models.Data
-import java.io.FileReader
+import org.json.JSONException
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
+    private var mQueue: RequestQueue? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
-    private var progr = 10
+    lateinit var date: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,28 +42,15 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        updateProgressBar()
-
-        binding.btnIncr.setOnClickListener{
-            if(progr <= 90){
-                progr += 10
-                updateProgressBar()
-            }
-        }
-        binding.btnDecr.setOnClickListener{
-            if(progr >= 10){
-                progr -= 10
-                updateProgressBar()
-            }
+        binding.btnRefresh.setOnClickListener{
+            getPopulation()
+            getFullVaccine()
         }
 
-        val json = """{"title": "Kotlin Tutorial #1", "author": "bezkoder", "categories" : ["Kotlin","Basic"]}"""
-        val gson = Gson()
-
-        val tutorial_1: Data = gson.fromJson(json, Data::class.java)
-        binding.tvJson.text = tutorial_1
-
-
+        mQueue = Volley.newRequestQueue(requireContext())
+        jsonParsePopulation()
+        jsonParse()
+        lastUpdateParse()
         return root
     }
 
@@ -67,18 +59,98 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    fun AssetManager.readFile(fileName: String) = open(fileName)
-        .bufferedReader()
-        .use { it.readText() }
 
-    val jsonString = context?.assets?.readFile("https://github.com/italia/covid19-opendata-vaccini/blob/master/dati/anagrafica-vaccini-summary-latest.json")
 
-    private fun updateProgressBar(){
-        binding.progressBar.progress = progr
-        binding.tvProgress.text= "$progr%"
+    lateinit var anagraficaSummary: ArrayList<AnagraficaSummary>
+    var tot = 0
+    var population = 0
+
+    private fun jsonParse() {
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/anagrafica-vaccini-summary-latest.json", null,
+            { response ->
+                try {
+                    val jsonArray = response.getJSONArray("data")
+
+                    var gson = Gson()
+
+                    val sType = object : TypeToken<ArrayList<AnagraficaSummary>>() {}.type
+                    anagraficaSummary = gson.fromJson(jsonArray.toString(), sType)
+                    getFullVaccine()
+                    updateProgressBar()
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
     }
 
+    lateinit var platea: ArrayList<Platea>
+    private fun jsonParsePopulation() {
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/platea.json", null,
+            { response ->
+                try {
+                    val jsonArray = response.getJSONArray("data")
+
+                    var gsonPop = Gson()
+
+                    val sType = object : TypeToken<ArrayList<Platea>>() {}.type
+                    platea = gsonPop.fromJson(jsonArray.toString(), sType)
+                    getPopulation()
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+    }
+
+    private fun getPopulation(){
+        for (i in 0 until 167) {
+            population += platea[i].totale_popolazione
+        }
+    }
+
+    private fun getFullVaccine() {
+        for (i in 0 until 8) {
+            tot += anagraficaSummary[i].seconda_dose
+        }
+    }
+
+    private fun updateProgressBar(){
+
+        var vaccinated = (100*tot)/population
+
+        binding.progressBar.progress = vaccinated
+        binding.tvProgress.text= "$vaccinated%"
+    }
+
+    private fun lastUpdateParse() {
+        val url = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/last-update-dataset.json"
 
 
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                try {
+                    val json = response.get("ultimo_aggiornamento")
+                    val d: ZonedDateTime = ZonedDateTime.parse(json.toString())
+                    val formatter: DateTimeFormatter =
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    date =  formatter.format(d)
+                    binding.tvJson.append(date)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+    }
 
 }
+
+
+

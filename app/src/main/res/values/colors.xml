@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue_A200">#18FFFF</color>
     <color name="dark_blue_A400">#3D5AFE</color>
+    <color name="green">#008000</color>
+    <color name="red">#ff0000</color>
+    <color name="darkorange">#ff8c00</color>
+    <color name="purple_700">#FF3700B3</color>
 </resources>

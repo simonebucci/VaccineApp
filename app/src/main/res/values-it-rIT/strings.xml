@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VaccineData</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="title_vaccinated">Popolazione Vaccinata</string>
+    <string name="nav_header_title">Dati vaccini</string>
+    <string name="nav_header_subtitle">per COVID-19</string>
+    <string name="last_update">Ultimo Aggiornamento:</string>
+</resources>
