@@ -6,4 +6,8 @@
     <string name="nav_header_title">Dati vaccini</string>
     <string name="nav_header_subtitle">per COVID-19</string>
     <string name="last_update">Ultimo Aggiornamento:</string>
+    <string name="title_vaccine">Vaccini consegnati e somministrati</string>
+    <string name="title_onevaccine">Popolazione Vaccinata con almeno una dose</string>
+    <string name="menu_settings">Impostazioni</string>
+    <string name="menu_delivery">Consegne</string>
 </resources>

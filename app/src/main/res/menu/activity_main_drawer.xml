@@ -13,8 +13,12 @@
             android:icon="@drawable/shot"
             android:title="@string/menu_gallery" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_delivery"
             android:icon="@drawable/covid_vaccine"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_delivery" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="@string/menu_settings" />
     </group>
 </menu>
