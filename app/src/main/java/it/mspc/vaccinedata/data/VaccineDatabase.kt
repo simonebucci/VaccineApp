@@ -7,6 +7,8 @@ import androidx.room.RoomDatabase
 import dev.matrix.roomigrant.GenerateRoomMigrations
 import it.mspc.vaccinedata.data.lastupdate.LastUpdate
 import it.mspc.vaccinedata.data.lastupdate.LastUpdateDao
+import it.mspc.vaccinedata.data.vaccine.Vaccine
+import it.mspc.vaccinedata.data.vaccine.VaccineDao
 import it.mspc.vaccinedata.models.PlateaDao
 
 

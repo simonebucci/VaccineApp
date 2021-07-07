@@ -1,9 +1,10 @@
-package it.mspc.vaccinedata.data
+package it.mspc.vaccinedata.data.vaccine
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import it.mspc.vaccinedata.data.VaccineDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

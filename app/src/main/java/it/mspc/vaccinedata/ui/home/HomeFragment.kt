@@ -10,11 +10,10 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import it.mspc.vaccinedata.data.Vaccine
-import it.mspc.vaccinedata.data.VaccineViewModel
-//import it.mspc.vaccinedata.data.VaccineViewModel
+import it.mspc.vaccinedata.data.vaccine.Vaccine
+import it.mspc.vaccinedata.data.vaccine.VaccineViewModel
+//import it.mspc.vaccinedata.data.vaccine.VaccineViewModel
 import it.mspc.vaccinedata.databinding.FragmentHomeBinding
-import it.mspc.vaccinedata.models.DataX
 import org.json.JSONException
 
 
@@ -102,22 +101,5 @@ class HomeFragment : Fragment() {
             }) { error -> error.printStackTrace() }
         mQueue!!.add(request)
     }}
-    /*private fun lastUpdateParse() {
-        val url = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/last-update-dataset.json"
-
-
-        val request = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            { response ->
-                try {
-                    json = response.get("ultimo_aggiornamento")
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }) { error -> error.printStackTrace() }
-        mQueue!!.add(request)
-    }
-
-     */
 
 

@@ -16,8 +16,12 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import it.mspc.vaccinedata.data.lastupdate.LastUpdate
 import it.mspc.vaccinedata.data.lastupdate.LastUpdateViewModel
+import it.mspc.vaccinedata.data.vaccine.Vaccine
+import it.mspc.vaccinedata.data.vaccine.VaccineViewModel
 import it.mspc.vaccinedata.databinding.ActivityMainBinding
 import org.json.JSONException
 import java.time.ZonedDateTime
@@ -28,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var lastupdateViewModel: LastUpdateViewModel
+    private lateinit var vaccineViewModel: VaccineViewModel
     private var mQueue: RequestQueue? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         lastupdateViewModel = ViewModelProvider(this).get(LastUpdateViewModel::class.java)
+        vaccineViewModel = ViewModelProvider(this).get(VaccineViewModel::class.java)
         mQueue = Volley.newRequestQueue(this)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -97,6 +103,31 @@ class MainActivity : AppCompatActivity() {
             }) { error -> error.printStackTrace() }
         mQueue!!.add(request)
 
+    }
+
+    lateinit var anagraficaSummary: ArrayList<Vaccine>
+
+    private fun jsonParse() {
+        //parse del file json contenente il summary dell'anagrafica sui vaccini
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/anagrafica-vaccini-summary-latest.json", null,
+            { response ->
+                try {
+                    val jsonArray = response.getJSONArray("data")
+
+                    var gson = Gson()
+
+                    val sType = object : TypeToken<ArrayList<Vaccine>>() {}.type
+                    anagraficaSummary = gson.fromJson(jsonArray.toString(), sType)
+                    var vaccine = Vaccine()
+                    vaccineViewModel.addUpdate(anagraficaSummary)
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
     }
 
 }

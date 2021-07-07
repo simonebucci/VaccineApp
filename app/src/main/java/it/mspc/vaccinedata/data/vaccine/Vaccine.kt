@@ -1,4 +1,4 @@
-package it.mspc.vaccinedata.data
+package it.mspc.vaccinedata.data.vaccine
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
