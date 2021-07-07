@@ -54,8 +54,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
-
         lastUpdateParse()
 
     }
@@ -88,9 +86,7 @@ class MainActivity : AppCompatActivity() {
                     var date = formatter.format(d)
                     var lastdate = LastUpdate(0, date)
 
-                    if(lastupdateViewModel.getData() == null){
-                        lastupdateViewModel.addUpdate(lastdate)
-                    }else if(lastupdateViewModel.getData().toString() != date){
+                    if(lastupdateViewModel.getData().toString() != date){
                         lastupdateViewModel.delete()
                         lastupdateViewModel.addUpdate(lastdate)
                     }
