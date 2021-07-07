@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-/*
-class VaccineViewModel(application: Application): AndroidViewModel(application) {
+
+public class VaccineViewModel(application: Application): AndroidViewModel(application) {
 
     private val readAllData: LiveData<List<Vaccine>>
     private val repository: VaccineRepository
@@ -23,4 +23,4 @@ class VaccineViewModel(application: Application): AndroidViewModel(application) 
             repository.addUpdate(vaccine)
         }
     }
-}*/
+}

@@ -4,11 +4,20 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-/*
-@Database(entities = [Vaccine::class], version = 1, exportSchema = false)
+import dev.matrix.roomigrant.GenerateRoomMigrations
+import it.mspc.vaccinedata.data.lastupdate.LastUpdate
+import it.mspc.vaccinedata.data.lastupdate.LastUpdateDao
+import it.mspc.vaccinedata.models.PlateaDao
+
+
+@Database( entities = [Vaccine::class, Platea::class, LastUpdate::class], version = 3, exportSchema = false)
+//@TypeConverters(Converters::class)
+@GenerateRoomMigrations
 abstract class VaccineDatabase: RoomDatabase() {
 
     abstract fun vaccineDao(): VaccineDao
+    abstract fun plateaDao(): PlateaDao
+    abstract fun lastupdateDao(): LastUpdateDao
 
     companion object{
         @Volatile
@@ -25,9 +34,10 @@ abstract class VaccineDatabase: RoomDatabase() {
                     VaccineDatabase::class.java,
                     "vaccine_database"
                 ).build()
+
                 INSTANCE = instance
                 return instance
             }
         }
     }
-}*/
+}

@@ -11,12 +11,24 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import it.mspc.vaccinedata.data.lastupdate.LastUpdate
+import it.mspc.vaccinedata.data.lastupdate.LastUpdateViewModel
 import it.mspc.vaccinedata.databinding.ActivityMainBinding
+import org.json.JSONException
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var lastupdateViewModel: LastUpdateViewModel
+    private var mQueue: RequestQueue? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +38,8 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
+        lastupdateViewModel = ViewModelProvider(this).get(LastUpdateViewModel::class.java)
+        mQueue = Volley.newRequestQueue(this)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -39,6 +53,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+
+        lastUpdateParse()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -51,4 +70,37 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
+    private fun lastUpdateParse() {
+        //parse del file json contenente la data dell'ultimo aggiornamento effettuato sui dati
+
+        val url = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/last-update-dataset.json"
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                try {
+                    val json = response.get("ultimo_aggiornamento")
+                    val d: ZonedDateTime = ZonedDateTime.parse(json.toString())
+                    val formatter: DateTimeFormatter =
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    var date = formatter.format(d)
+                    var lastdate = LastUpdate(0, date)
+
+                    if(lastupdateViewModel.getData() == null){
+                        lastupdateViewModel.addUpdate(lastdate)
+                    }else if(lastupdateViewModel.getData().toString() != date){
+                        lastupdateViewModel.delete()
+                        lastupdateViewModel.addUpdate(lastdate)
+                    }
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+
+    }
+
 }
