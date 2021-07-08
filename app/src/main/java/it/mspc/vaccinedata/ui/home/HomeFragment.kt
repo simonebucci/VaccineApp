@@ -99,7 +99,7 @@ class HomeFragment : Fragment() {
         mQueue!!.add(request)
     }
 
-    lateinit var platea: ArrayList<Platea>
+    private var platea = ArrayList<Platea>()
     private fun jsonParsePopulation() {
         //parse del file json per ottenere il totale della popolazione italiana aggiornata
         val request = JsonObjectRequest(

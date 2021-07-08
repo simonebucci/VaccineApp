@@ -1,0 +1,22 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+    <string-array name="night_mode_prefs">
+        <item name="system">@string/system</item>
+        <item name="light">@string/light</item>
+        <item name="dark">@string/dark</item>
+    </string-array>
+    <string-array name="night_mode_prefs_enum">
+        <item name="system">@string/system_enum</item>
+        <item name="light">@string/light_enum</item>
+        <item name="dark">@string/dark_enum</item>
+    </string-array>
+</resources>

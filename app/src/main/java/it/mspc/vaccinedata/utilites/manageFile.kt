@@ -41,12 +41,14 @@ public class manageFile(context: Context){
         println(out)
         return out
     }
-    fun deleteFileUpdate(){
+    fun deleteFiles(){
         val path = mycontext.getExternalFilesDir(null)
         val folder = File(path, "jsondata")
         val file = File(folder, "lastupdate.txt")
+        val file2 = File(folder, "anagrafica.txt")
         file.delete()
-        println("file deleted!")
+        file2.delete()
+        println("files deleted!")
 
     }
 
@@ -66,11 +68,11 @@ public class manageFile(context: Context){
 
         println(folder.exists()) // you'll get true
 
-        val file = File(folder, "file_name.txt")
+        val file = File(folder, "anagrafica.txt")
         file.appendText(jsonString)
         println("File saved!")
         println(file.absolutePath)
-        val file2 = File(folder, "file_name.txt")
+        val file2 = File(folder, "anagrafica.txt")
         var out = ""
         out = file2.readText()
         println(out)

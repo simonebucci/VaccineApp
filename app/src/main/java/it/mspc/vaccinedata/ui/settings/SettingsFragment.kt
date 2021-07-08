@@ -1,37 +1,29 @@
 package it.mspc.vaccinedata.ui.settings
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import it.mspc.vaccinedata.databinding.FragmentSettingsBinding
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import it.mspc.vaccinedata.R
 
-class SettingsFragment: Fragment() {
+class SettingsFragment : PreferenceFragmentCompat() {
 
-    private var _binding: FragmentSettingsBinding? = null
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        return root
+        val nightMode: Preference = findPreference(getString(R.string.night_mode_pref))!!
+        //nightMode.setOnPreferenceChangeListener(this)
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    /*
+    override fun onDisplayPreferenceDialog(preference: Preference) {
+        if (preference.key == getString(R.string.first_use_pref)) { // Display custom dialog
+            val dialogFragment: it.mspc.vaccinedata.ui.settings.SettingsFragment.FragmentResetDataDialog =
+                it.mspc.vaccinedata.ui.settings.SettingsFragment.FragmentResetDataDialog
+                    .newInstance(preference.key)
+            dialogFragment.setTargetFragment(this, 0)
+            dialogFragment.show(parentFragmentManager, null)
+        } else {
+            super.onDisplayPreferenceDialog(preference)
+        }
     }
+    */
 }

@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                     //if file exists check for updates, if first time save data//
                     if(manage.openFileUpdate().exists()) {
                         if (manage.readFileUpdate() != date) {
-                            manage.deleteFileUpdate()
+                            manage.deleteFiles()
                             manage.saveFileUpdate(date)
                         }
                     }else{

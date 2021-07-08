@@ -9,12 +9,36 @@
 
     <string name="menu_home" translatable="false">Home</string>
     <string name="menu_gallery" translatable="false">Gallery</string>
-    <string name="menu_delivery" >Delivery</string>
-    <string name="menu_settings" >Settings</string>
+    <string name="menu_delivery">Delivery</string>
+    <string name="menu_settings">Settings</string>
 
 
     <string name="title_vaccinated">Vaccinated Population</string>
     <string name="last_update">Last Update:</string>
     <string name="title_vaccine">Vaccines delivered and administered</string>
     <string name="title_onevaccine">Vaccinated Population with at least one inoculation</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="night_mode">Night Mode</string>
+    <string name="night_mode_summary">Night Mode displays dark surfaces across the majority of the UI</string>
+    <string name="night_mode_pref" translatable="false">night_mode</string>
+    <string name="system">System default</string>
+    <string name="light">Light theme</string>
+    <string name="dark">Dark theme</string>
+    <string name="system_enum" translatable="false">0</string>
+    <string name="light_enum" translatable="false">1</string>
+    <string name="dark_enum" translatable="false">2</string>
 </resources>
