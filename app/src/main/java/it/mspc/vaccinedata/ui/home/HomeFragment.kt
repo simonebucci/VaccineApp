@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import it.mspc.vaccinedata.data.AnagraficaSummary
 import it.mspc.vaccinedata.data.Platea
+import it.mspc.vaccinedata.data.PuntiSommTipo
 import it.mspc.vaccinedata.databinding.FragmentHomeBinding
 import it.mspc.vaccinedata.utilites.manageFile
 import org.json.JSONException
@@ -49,6 +50,8 @@ class HomeFragment : Fragment() {
         //anagraficaParse()
         //plateaParse()
         //updateProgressBar()
+        //puntiPars()
+        //puntiTipoPars()
         return root
     }
 
@@ -74,6 +77,14 @@ class HomeFragment : Fragment() {
         var manage = manageFile(requireContext())
         var out = manage.readFilePlatea()
         platea = manage.parseFilePlatea(out)
+    }
+    private var puntiTipo = ArrayList<PuntiSommTipo>()
+    private fun puntiTipoPars() {
+        //parse del file json per ottenere il totale della popolazione italiana aggiornata
+        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        var manage = manageFile(requireContext())
+        var out = manage.readFilePuntiTipo()
+        puntiTipo = manage.parseFilePuntiTipo(out)
     }
 
     private fun getPopulation() {

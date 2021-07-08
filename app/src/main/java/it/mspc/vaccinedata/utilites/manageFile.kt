@@ -3,8 +3,7 @@ package it.mspc.vaccinedata.utilites
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import it.mspc.vaccinedata.data.AnagraficaSummary
-import it.mspc.vaccinedata.data.Platea
+import it.mspc.vaccinedata.data.*
 import org.json.JSONObject
 import java.io.File
 
@@ -144,5 +143,238 @@ public class manageFile(context: Context){
         return gson.fromJson(jsonArray.toString(), sType)
     }
 
+    ////////////////////Consegne////////////////////////////////
+    fun saveFileConsegne(jsonString: String): String{
+
+        val path = mycontext.getExternalFilesDir(null)
+
+        val folder = File(path, "jsondata")
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        println(folder.exists()) // you'll get true
+
+        val file = File(folder, "consegne.txt")
+        file.appendText(jsonString)
+        println("Consegne File saved!")
+        println(file.absolutePath)
+        val file2 = File(folder, "consegne.txt")
+        var out = ""
+        out = file2.readText()
+        println(out)
+        return out
+    }
+    fun readFileConsegne(): String{
+        val path = mycontext.getExternalFilesDir(null)
+        val folder = File(path, "jsondata")
+        val file2 = File(folder, "consegne.txt")
+        var out = ""
+        out = file2.readText()
+        return out
+    }
+    fun parseFileConsegne(out: String): ArrayList<ConsegneVaccini> {
+        val json = JSONObject(out)
+        val jsonArray = json.getJSONArray("data")
+        var gson = Gson()
+
+        val sType = object : TypeToken<ArrayList<ConsegneVaccini>>() {}.type
+        return gson.fromJson(jsonArray.toString(), sType)
+    }
+
+    //////////////////////PuntiSomministrazione///////////////////////////////
+    fun saveFilePunti(jsonString: String): String{
+
+        val path = mycontext.getExternalFilesDir(null)
+
+        val folder = File(path, "jsondata")
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        println(folder.exists()) // you'll get true
+
+        val file = File(folder, "punti.txt")
+        file.appendText(jsonString)
+        println("Punti File saved!")
+        println(file.absolutePath)
+        val file2 = File(folder, "punti.txt")
+        var out = ""
+        out = file2.readText()
+        println(out)
+        return out
+    }
+    fun readFilePunti(): String{
+        val path = mycontext.getExternalFilesDir(null)
+        val folder = File(path, "jsondata")
+        val file2 = File(folder, "punti.txt")
+        var out = ""
+        out = file2.readText()
+        return out
+    }
+    fun parseFilePunti(out: String): ArrayList<PuntiSomministrazione> {
+        val json = JSONObject(out)
+        val jsonArray = json.getJSONArray("data")
+        var gson = Gson()
+
+        val sType = object : TypeToken<ArrayList<PuntiSomministrazione>>() {}.type
+        return gson.fromJson(jsonArray.toString(), sType)
+    }
+
+    //////////////////////PuntiSomministrazioneTipo///////////////////////////////
+    fun saveFilePuntiTipo(jsonString: String): String{
+
+        val path = mycontext.getExternalFilesDir(null)
+
+        val folder = File(path, "jsondata")
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        println(folder.exists()) // you'll get true
+
+        val file = File(folder, "punti_tipo.txt")
+        file.appendText(jsonString)
+        println("Punti File saved!")
+        println(file.absolutePath)
+        val file2 = File(folder, "punti_tipo.txt")
+        var out = ""
+        out = file2.readText()
+        println(out)
+        return out
+    }
+    fun readFilePuntiTipo(): String{
+        val path = mycontext.getExternalFilesDir(null)
+        val folder = File(path, "jsondata")
+        val file2 = File(folder, "punti_tipo.txt")
+        var out = ""
+        out = file2.readText()
+        return out
+    }
+    fun parseFilePuntiTipo(out: String): ArrayList<PuntiSommTipo> {
+        val json = JSONObject(out)
+        val jsonArray = json.getJSONArray("data")
+        var gson = Gson()
+
+        val sType = object : TypeToken<ArrayList<PuntiSommTipo>>() {}.type
+        return gson.fromJson(jsonArray.toString(), sType)
+    }
+
+    //////////////////////SomministrazioniLatest///////////////////////////////
+    fun saveFileSommLatest(jsonString: String): String{
+
+        val path = mycontext.getExternalFilesDir(null)
+
+        val folder = File(path, "jsondata")
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        println(folder.exists()) // you'll get true
+
+        val file = File(folder, "somm_latest.txt")
+        file.appendText(jsonString)
+        println("Somm_latest File saved!")
+        println(file.absolutePath)
+        val file2 = File(folder, "somm_latest.txt")
+        var out = ""
+        out = file2.readText()
+        println(out)
+        return out
+    }
+    fun readFileSommLatest(): String{
+        val path = mycontext.getExternalFilesDir(null)
+        val folder = File(path, "jsondata")
+        val file2 = File(folder, "somm_latest.txt")
+        var out = ""
+        out = file2.readText()
+        return out
+    }
+    fun parseFileSommLatest(out: String): ArrayList<SomministrazioniLatest> {
+        val json = JSONObject(out)
+        val jsonArray = json.getJSONArray("data")
+        var gson = Gson()
+
+        val sType = object : TypeToken<ArrayList<SomministrazioniLatest>>() {}.type
+        return gson.fromJson(jsonArray.toString(), sType)
+    }
+
+    //////////////////////SomministrazioniSummary///////////////////////////////
+    fun saveFileSommSumm(jsonString: String): String{
+
+        val path = mycontext.getExternalFilesDir(null)
+
+        val folder = File(path, "jsondata")
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        println(folder.exists()) // you'll get true
+
+        val file = File(folder, "somm_summ.txt")
+        file.appendText(jsonString)
+        println("Somm_summ File saved!")
+        println(file.absolutePath)
+        val file2 = File(folder, "somm_summ.txt")
+        var out = ""
+        out = file2.readText()
+        println(out)
+        return out
+    }
+    fun readFileSommSumm(): String{
+        val path = mycontext.getExternalFilesDir(null)
+        val folder = File(path, "jsondata")
+        val file2 = File(folder, "somm_summ.txt")
+        var out = ""
+        out = file2.readText()
+        return out
+    }
+    fun parseFileSommSumm(out: String): ArrayList<SomministrazioniLatest> {
+        val json = JSONObject(out)
+        val jsonArray = json.getJSONArray("data")
+        var gson = Gson()
+
+        val sType = object : TypeToken<ArrayList<SomministrazioniLatest>>() {}.type
+        return gson.fromJson(jsonArray.toString(), sType)
+    }
+
+    //////////////////////VacciniSummary///////////////////////////////
+    fun saveFileVacciniSumm(jsonString: String): String{
+
+        val path = mycontext.getExternalFilesDir(null)
+
+        val folder = File(path, "jsondata")
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        println(folder.exists()) // you'll get true
+
+        val file = File(folder, "vaccini_summ.txt")
+        file.appendText(jsonString)
+        println("Vaccini_summ File saved!")
+        println(file.absolutePath)
+        val file2 = File(folder, "vaccini_summ.txt")
+        var out = ""
+        out = file2.readText()
+        println(out)
+        return out
+    }
+    fun readFileVacciniSumm(): String{
+        val path = mycontext.getExternalFilesDir(null)
+        val folder = File(path, "jsondata")
+        val file2 = File(folder, "vaccini_summ.txt")
+        var out = ""
+        out = file2.readText()
+        return out
+    }
+    fun parseFileVacciniSumm(out: String): ArrayList<VacciniSummary> {
+        val json = JSONObject(out)
+        val jsonArray = json.getJSONArray("data")
+        var gson = Gson()
+
+        val sType = object : TypeToken<ArrayList<VacciniSummary>>() {}.type
+        return gson.fromJson(jsonArray.toString(), sType)
+    }
 }
 

@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -86,11 +87,23 @@ class MainActivity : AppCompatActivity() {
                             manage.saveFileUpdate(date)
                             jsonParse()
                             jsonPlatea()
+                            jsonConsegne()
+                            jsonPunti()
+                            jsonPuntiTipo()
+                            jsonSommLatest()
+                            jsonSommSumm()
+                            jsonVacciniSumm()
                         }
                     }else{
                         manage.saveFileUpdate(date)
                         jsonParse()
                         jsonPlatea()
+                        jsonConsegne()
+                        jsonPunti()
+                        jsonPuntiTipo()
+                        jsonSommLatest()
+                        jsonSommSumm()
+                        jsonVacciniSumm()
                     }
                     ////////////////////////////////////////////////////////////
                 } catch (e: JSONException) {
@@ -135,5 +148,114 @@ class MainActivity : AppCompatActivity() {
             }) { error -> error.printStackTrace() }
         mQueue!!.add(request)
     }
+
+    private fun jsonConsegne(){
+        //parse del file json contenente le consegne dei vaccini
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/consegne-vaccini-latest.json", null,
+            { response ->
+                try {
+                    var file = response.toString()
+
+                    manage.saveFileConsegne(file)
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+    }
+
+    private fun jsonPunti(){
+        //parse del file json contenente i punti di somministrazione
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/punti-somministrazione-latest.json", null,
+            { response ->
+                try {
+                    var file = response.toString()
+
+                    manage.saveFilePunti(file)
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+    }
+
+    private fun jsonPuntiTipo(){
+        //parse del file json contenente le tipologie di punti di somministrazione
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/punti-somministrazione-tipologia.json", null,
+            { response ->
+                try {
+                    var file = response.toString()
+
+                    manage.saveFilePuntiTipo(file)
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+    }
+
+    private fun jsonSommLatest(){
+        //parse del file json contenente le ultime info sulle somministrazioni
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://github.com/italia/covid19-opendata-vaccini/blob/master/dati/somministrazioni-vaccini-latest.json", null,
+            { response ->
+                try {
+                    var file = response.toString()
+
+                    manage.saveFileSommLatest(file)
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+    }
+
+    private fun jsonSommSumm(){
+        //parse del file json contenente le summary info sulle somministrazioni
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/somministrazioni-vaccini-summary-latest.json", null,
+            { response ->
+                try {
+                    var file = response.toString()
+
+                    manage.saveFileSommSumm(file)
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+    }
+
+    private fun jsonVacciniSumm(){
+        //parse del file json contenente le summary info sulle somministrazioni
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/vaccini-summary-latest.json", null,
+            { response ->
+                try {
+                    var file = response.toString()
+
+                    manage.saveFileVacciniSumm(file)
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
+    }
+
 
 }
