@@ -7,20 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.github.mikephil.charting.utils.ColorTemplate
 import it.mspc.vaccinedata.R
 import it.mspc.vaccinedata.data.ConsegneVaccini
 import it.mspc.vaccinedata.data.VacciniSummary
 import it.mspc.vaccinedata.databinding.FragmentDeliveryBinding
-import org.json.JSONException
+import it.mspc.vaccinedata.utilities.ManageFile
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class DeliveryFragment : Fragment() {
 
@@ -43,10 +44,17 @@ class DeliveryFragment : Fragment() {
         _binding = FragmentDeliveryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         mQueue = Volley.newRequestQueue(requireContext())
-        jsonParse()
-        vaccineParse()
+
+
+
+
+        vacciniParse()
+        consegneParse()
+        getDealer()
+        setChart()
+        setPieChart()
+
         return root
     }
 
@@ -55,66 +63,75 @@ class DeliveryFragment : Fragment() {
         _binding = null
     }
 
-    lateinit var vacciniSummary: ArrayList<VacciniSummary>
-    lateinit var consegneSummary: ArrayList<ConsegneVaccini>
-
-    private fun jsonParse() {
-
-        val request = JsonObjectRequest(
-            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/vaccini-summary-latest.json", null,
-            { response ->
-                try {
-                    val jsonArray = response.getJSONArray("data")
-
-                    var gsonVaccine = Gson()
-
-                    val sType = object : TypeToken<ArrayList<VacciniSummary>>() {}.type
-                    vacciniSummary = gsonVaccine.fromJson(jsonArray.toString(), sType)
-                    getDelivered()
-                    getShotted()
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }) { error -> error.printStackTrace() }
-        mQueue!!.add(request)
+    private var consegneSummary = ArrayList<ConsegneVaccini>()
+    private fun consegneParse() {
+        //parse del file json contenente le consegne dei vaccini
+        val manage = ManageFile(requireContext())
+        val out = manage.readFileConsegne()
+        consegneSummary = manage.parseFileConsegne(out)
     }
 
-    var delivered = 0
+    private var vacciniSummary = ArrayList<VacciniSummary>()
+    private fun vacciniParse() {
+        //parse del file json contenente il summary dei vaccini
+        val manage = ManageFile(requireContext())
+        val out = manage.readFileVacciniSumm()
+        vacciniSummary = manage.parseFileVacciniSumm(out)
+        getDelivered()
+        getShotted()
+    }
 
-    private fun getDelivered() {
+
+    private fun getDelivered(): Int {
+        var delivered = 0
         for (i in 0 until 20) {
             delivered += vacciniSummary[i].dosi_consegnate
         }
+        return delivered
     }
 
-    var shot = 0
 
-    private fun getShotted(){
+
+    private fun getShotted(): Int{
+        var shot = 0
         for (i in 0 until 20){
             shot += vacciniSummary[i].dosi_somministrate
         }
+        return shot
     }
 
+    private fun setPieChart() {
+        val xValues = ArrayList<String>()
+        xValues.add("Delivered")
+        xValues.add("Inoculated")
 
-    private fun vaccineParse() {
+        var d = getDelivered()
+        var s = getShotted()
 
-        val request = JsonObjectRequest(
-            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/consegne-vaccini-latest.json", null,
-            { response ->
-                try {
-                    val jsonArray = response.getJSONArray("data")
+        val pieChartEntry = ArrayList<Entry>()
+        pieChartEntry.add(Entry(d.toFloat(),0))
+        pieChartEntry.add(Entry(s.toFloat(),0))
 
-                    var vaccine = Gson()
 
-                    val sType = object : TypeToken<ArrayList<ConsegneVaccini>>() {}.type
-                    consegneSummary = vaccine.fromJson(jsonArray.toString(), sType)
-                    getDealer()
-                    setChart()
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }) { error -> error.printStackTrace() }
-        mQueue!!.add(request)
+
+        val dataSet = PieDataSet(pieChartEntry, "")
+        dataSet.valueTextSize=0f
+        val colors = java.util.ArrayList<Int>()
+        colors.add(resources.getColor(R.color.blue_500))
+        colors.add(resources.getColor(R.color.teal_200))
+
+        dataSet.setColors(colors)
+        val data = PieData(xValues,dataSet)
+        binding.pieChart2.data = data
+        binding.pieChart2.centerTextRadiusPercent = 0f
+        binding.pieChart2.isDrawHoleEnabled = false
+        binding.pieChart2.legend.isEnabled = true
+        binding.pieChart2.setDescription("Delivered & Inoculated")
+        binding.pieChart2.animateY(3000)
+
+        val legend: Legend = binding.pieChart2.legend
+        legend.position = Legend.LegendPosition.LEFT_OF_CHART
+
     }
 
     var pfizer = 0
@@ -123,7 +140,7 @@ class DeliveryFragment : Fragment() {
     var moderna = 0
 
     private fun getDealer(){
-        for (i in 0 until 3103){
+        for (i in 0 until consegneSummary.size){
             if(consegneSummary[i].fornitore == "Vaxzevria (AstraZeneca)")
                 astra += consegneSummary[i].numero_dosi
             else if(consegneSummary[i].fornitore == "Moderna"){
@@ -136,12 +153,13 @@ class DeliveryFragment : Fragment() {
         }
     }
 
+
     fun setChart(){
 
         //x axis values
 
         val xvalue = ArrayList<String>()
-        xvalue.add("Vaccine Delivered from Providers")
+        xvalue.add("")
 
 
         //y axis values or bar data
@@ -169,26 +187,15 @@ class DeliveryFragment : Fragment() {
             barentries3.add(BarEntry(yaxis3[i],i))
         }
 
-        /*barentries.add(BarEntry(delivered.toFloat(),0))
-        barentries.add(BarEntry(3.5f,1))
-        barentries.add(BarEntry(8.9f,2))
-        barentries.add(BarEntry(5.6f,3))
-        barentries.add(BarEntry(2f,4))
-        barentries.add(BarEntry(6f,5))
-        barentries.add(BarEntry(9f,6))
-        */
-
-
-
         //bardata set
         val bardataset = BarDataSet(barentries,"Pfizer")
         val bardataset1 = BarDataSet(barentries1,"Moderna")
         val bardataset2 = BarDataSet(barentries2,"Astrazeneca")
         val bardataset3 = BarDataSet(barentries3,"Johnson&Johnson")
         bardataset.color = resources.getColor(R.color.blue_500)
-        bardataset1.color = resources.getColor(R.color.red)
-        bardataset2.color = resources.getColor(R.color.purple_700)
-        bardataset3.color = resources.getColor(R.color.blue_A200)
+        bardataset1.color = resources.getColor(R.color.colorAccent)
+        bardataset2.color = resources.getColor(R.color.colorPrimaryDark)
+        bardataset3.color = resources.getColor(R.color.teal_200)
 
 
         val finalBarDataSet = ArrayList<BarDataSet>()
@@ -206,7 +213,6 @@ class DeliveryFragment : Fragment() {
         binding.barChart2.animateXY(3000,3000)
 
     }
-
 
 
 }

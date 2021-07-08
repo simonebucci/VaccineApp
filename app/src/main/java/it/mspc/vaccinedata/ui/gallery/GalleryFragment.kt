@@ -49,69 +49,13 @@ class GalleryFragment : Fragment() {
         val root: View = binding.root
 
         mQueue = Volley.newRequestQueue(requireContext())
-        jsonParse()
-        setPieChart()
+
         plateaParse()
         anagraficaParse()
+        vacciniParse()
         updateProgressBar()
+        setPieChart()
         return root
-    }
-
-
-    private fun setPieChart() {
-        val xValues = ArrayList<String>()
-        xValues.add("Pfizer")
-        xValues.add("Moderna")
-        xValues.add("Astrazeneca")
-        xValues.add("Johnson&Johnson")
-
-        val pieChartEntry = ArrayList<Entry>()
-        pieChartEntry.add(Entry(23f,0))
-        pieChartEntry.add(Entry(11f,0))
-        pieChartEntry.add(Entry(33f,0))
-
-
-        val dataSet = PieDataSet(pieChartEntry, "")
-        dataSet.valueTextSize=0f
-        val colors = java.util.ArrayList<Int>()
-        colors.add(Color.BLUE)
-        colors.add(Color.GREEN)
-        colors.add(Color.MAGENTA)
-
-        dataSet.setColors(colors)
-        val data = PieData(xValues,dataSet)
-        binding.pieChart.data = data
-        binding.pieChart.centerTextRadiusPercent = 0f
-        binding.pieChart.isDrawHoleEnabled = false
-        binding.pieChart.legend.isEnabled = true
-        binding.pieChart.setDescription("Vaccine Dealers")
-        binding.pieChart.animateY(3000)
-
-        val legend: Legend = binding.pieChart.legend
-        legend.position = Legend.LegendPosition.LEFT_OF_CHART
-
-    }
-    lateinit var vacciniSummary: ArrayList<VacciniSummary>
-    private fun jsonParse() {
-
-        val request = JsonObjectRequest(
-            Request.Method.GET, "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/vaccini-summary-latest.json", null,
-            { response ->
-                try {
-                    val jsonArray = response.getJSONArray("data")
-
-                    var gsonVaccine = Gson()
-
-                    val sType = object : TypeToken<ArrayList<VacciniSummary>>() {}.type
-                    vacciniSummary = gsonVaccine.fromJson(jsonArray.toString(), sType)
-                    getDelivered()
-                    getShotted()
-                    setPieChart()
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }) { error -> error.printStackTrace() }
-        mQueue!!.add(request)
     }
 
     var population = 0
@@ -130,6 +74,15 @@ class GalleryFragment : Fragment() {
         val manage = ManageFile(requireContext())
         val out = manage.readFilePlatea()
         platea = manage.parseFilePlatea(out)
+    }
+    var vacciniSummary = ArrayList<VacciniSummary>()
+    private fun vacciniParse() {
+        //parse del file json per ottenere la platea
+        val manage = ManageFile(requireContext())
+        val out = manage.readFileVacciniSumm()
+        vacciniSummary = manage.parseFileVacciniSumm(out)
+        getDelivered()
+        getShotted()
     }
 
     private fun getPopulation() {
@@ -157,22 +110,58 @@ class GalleryFragment : Fragment() {
     }
 
 
-    var delivered = 0
-
-    private fun getDelivered() {
+    private fun getDelivered(): Int {
+        var delivered = 0
         for (i in 0 until 20) {
             delivered += vacciniSummary[i].dosi_consegnate
         }
+        return delivered
     }
 
-    var shot = 0
 
-    private fun getShotted(){
+
+    private fun getShotted(): Int{
+        var shot = 0
         for (i in 0 until 20){
             shot += vacciniSummary[i].dosi_somministrate
         }
+        return shot
     }
 
+    private fun setPieChart() {
+        val xValues = ArrayList<String>()
+        xValues.add("Delivered")
+        xValues.add("Inoculated")
+
+        var d = getDelivered()
+        var s = getShotted()
+
+        val pieChartEntry = ArrayList<Entry>()
+        pieChartEntry.add(Entry(d.toFloat(),0))
+        pieChartEntry.add(Entry(s.toFloat(),0))
+
+
+
+        val dataSet = PieDataSet(pieChartEntry, "")
+        dataSet.valueTextSize=0f
+        val colors = java.util.ArrayList<Int>()
+        colors.add(Color.BLUE)
+        colors.add(Color.GREEN)
+        colors.add(Color.MAGENTA)
+
+        dataSet.setColors(colors)
+        val data = PieData(xValues,dataSet)
+        binding.pieChart.data = data
+        binding.pieChart.centerTextRadiusPercent = 0f
+        binding.pieChart.isDrawHoleEnabled = false
+        binding.pieChart.legend.isEnabled = true
+        binding.pieChart.setDescription("")
+        binding.pieChart.animateY(3000)
+
+        val legend: Legend = binding.pieChart.legend
+        legend.position = Legend.LegendPosition.LEFT_OF_CHART
+
+    }
 
 
     override fun onDestroyView() {

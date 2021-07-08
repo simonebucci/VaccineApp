@@ -48,6 +48,10 @@ class HomeFragment : Fragment() {
 
         mQueue = Volley.newRequestQueue(requireContext())
 
+        binding.ivFlower?.setOnClickListener{
+            animationFlower()
+        }
+
         animationFlower()
         //anagraficaParse()
         //plateaParse()

@@ -2,12 +2,14 @@
 <resources>
     <string name="app_name">VaccineData</string>
     <string name="action_settings">Impostazioni</string>
-    <string name="title_vaccinated">Popolazione Vaccinata</string>
+    <string name="title_vaccinated">Popolazione Italiana Vaccinata</string>
     <string name="nav_header_title">Dati vaccini</string>
     <string name="nav_header_subtitle">per COVID-19</string>
     <string name="last_update">Ultimo Aggiornamento:</string>
-    <string name="title_vaccine">Vaccini consegnati e somministrati</string>
+    <string name="title_vaccine">Vaccini consegnati dai fornitori</string>
     <string name="title_onevaccine">Popolazione Vaccinata con almeno una dose</string>
     <string name="menu_settings">Impostazioni</string>
     <string name="menu_delivery">Consegne</string>
+    <string name="credits_header">Crediti</string>
+    <string name="title_pie">Consegnate vs Somministrate</string>
 </resources>
