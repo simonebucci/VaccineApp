@@ -19,8 +19,11 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import it.mspc.vaccinedata.R
+import it.mspc.vaccinedata.data.AnagraficaSummary
+import it.mspc.vaccinedata.data.Platea
 import it.mspc.vaccinedata.data.VacciniSummary
 import it.mspc.vaccinedata.databinding.FragmentGalleryBinding
+import it.mspc.vaccinedata.utilities.ManageFile
 import org.json.JSONException
 
 
@@ -47,8 +50,10 @@ class GalleryFragment : Fragment() {
 
         mQueue = Volley.newRequestQueue(requireContext())
         jsonParse()
-        setBarChart()
         setPieChart()
+        plateaParse()
+        anagraficaParse()
+        updateProgressBar()
         return root
     }
 
@@ -108,6 +113,50 @@ class GalleryFragment : Fragment() {
             }) { error -> error.printStackTrace() }
         mQueue!!.add(request)
     }
+
+    var population = 0
+    var tot = 0
+    private var anagraficaSummary = ArrayList<AnagraficaSummary>()
+    private fun anagraficaParse() {
+        //parse del file json contenente il summary dell'anagrafica sui vaccini
+        val manage = ManageFile(requireContext())
+        val out = manage.readFileAna()
+        anagraficaSummary = manage.parseFileAna(out)
+    }
+
+    private var platea = ArrayList<Platea>()
+    private fun plateaParse() {
+        //parse del file json per ottenere la platea
+        val manage = ManageFile(requireContext())
+        val out = manage.readFilePlatea()
+        platea = manage.parseFilePlatea(out)
+    }
+
+    private fun getPopulation() {
+        //funzione per ottenere il totale della popolazione italiana
+        for (i in 0 until 167) {
+            population += platea[i].totale_popolazione
+        }
+    }
+
+    private fun getFullVaccine() {
+        //funzione per ottenere il totale delle persone vaccinate con entrambe le dosi
+        for (i in 0 until 8) {
+            tot += anagraficaSummary[i].seconda_dose
+        }
+    }
+
+    private fun updateProgressBar() {
+        //funzione che calcola la percentuale della popolazione italiana vaccinata e che aggiorna la progress bar
+        getPopulation()
+        getFullVaccine()
+        val vaccinated = (100 * tot) / population
+
+        binding.progressBar2.progress = vaccinated
+        binding.tvProgress.text = "$vaccinated%"
+    }
+
+
     var delivered = 0
 
     private fun getDelivered() {
@@ -124,71 +173,8 @@ class GalleryFragment : Fragment() {
         }
     }
 
-    fun setBarChart(){
-
-        //x axis values
-
-        val xvalue = ArrayList<String>()
-        xvalue.add("Inoculated Vaccine")
 
 
-        //y axis values or bar data
-        val yaxis = arrayOf<Float>(delivered.toFloat())
-        val yaxis1 = arrayOf<Float>(shot.toFloat())
-        // val yaxis2 = arrayOf<Float>(6.0f,1f,3.8f,2.4f,6f,5f,4.7f)
-
-        //bar entry
-        val barentries = ArrayList<BarEntry>()
-        val barentries1 = ArrayList<BarEntry>()
-        //val barentries2 = ArrayList<BarEntry>()
-
-        for (i in 0..yaxis.size-1){
-            barentries.add(BarEntry(yaxis[i],i))
-        }
-        for (i in 0..yaxis1.size-1){
-            barentries1.add(BarEntry(yaxis1[i],i))
-        }
-        /*for (i in 0..yaxis2.size-1){
-            barentries2.add(BarEntry(yaxis2[i],i))
-        }*/
-
-        /*barentries.add(BarEntry(delivered.toFloat(),0))
-        barentries.add(BarEntry(3.5f,1))
-        barentries.add(BarEntry(8.9f,2))
-        barentries.add(BarEntry(5.6f,3))
-        barentries.add(BarEntry(2f,4))
-        barentries.add(BarEntry(6f,5))
-        barentries.add(BarEntry(9f,6))
-        */
-
-
-
-        //bardata set
-        val bardataset = BarDataSet(barentries,"Delivered")
-        val bardataset1 = BarDataSet(barentries1,"Inoculated")
-        // val bardataset2 = BarDataSet(barentries2,"Third")
-        bardataset.color = resources.getColor(R.color.blue_500)
-        bardataset1.color = resources.getColor(R.color.red)
-        //bardataset2.color = resources.getColor(R.color.purple_700)
-
-
-        val finalBarDataSet = ArrayList<BarDataSet>()
-        finalBarDataSet.add(bardataset)
-        finalBarDataSet.add(bardataset1)
-        //finalBarDataSet.add(bardataset2)
-
-        //make a bar data
-
-        val data = BarData(xvalue,finalBarDataSet as List<IBarDataSet>?)
-
-        binding.barChart.data = data
-
-        binding.barChart.setBackgroundColor(resources.getColor(R.color.white))
-        binding.barChart.animateXY(3000,3000)
-
-
-
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -72,7 +72,6 @@ class DeliveryFragment : Fragment() {
                     vacciniSummary = gsonVaccine.fromJson(jsonArray.toString(), sType)
                     getDelivered()
                     getShotted()
-                    setPieChart()
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
@@ -206,49 +205,8 @@ class DeliveryFragment : Fragment() {
         binding.barChart2.setBackgroundColor(resources.getColor(R.color.white))
         binding.barChart2.animateXY(3000,3000)
 
-
-
     }
 
-    private fun setPieChart() {
-        val xValues = ArrayList<String>()
-        xValues.add("Pfizer")
-        xValues.add("Moderna")
-        xValues.add("Astrazeneca")
-        xValues.add("Johnson&Johnson")
 
-        var p = pfizer.toFloat()
-        var m = moderna.toFloat()
-        var a = astra.toFloat()
-        var j = john.toFloat()
-
-        val pieChartEntry = ArrayList<Entry>()
-        pieChartEntry.add(Entry(p,0))
-        pieChartEntry.add(Entry(m,0))
-        pieChartEntry.add(Entry(a,0))
-        pieChartEntry.add(Entry(j,0))
-
-
-        val dataSet = PieDataSet(pieChartEntry, "")
-        dataSet.valueTextSize=0f
-        val colors = java.util.ArrayList<Int>()
-        colors.add(Color.BLUE)
-        colors.add(Color.GREEN)
-        colors.add(Color.MAGENTA)
-        colors.add(Color.RED)
-
-        dataSet.setColors(colors)
-        val data = PieData(xValues,dataSet)
-        binding.pieChart.data = data
-        binding.pieChart.centerTextRadiusPercent = 0f
-        binding.pieChart.isDrawHoleEnabled = false
-        binding.pieChart.legend.isEnabled = true
-        binding.pieChart.setDescription("Vaccine Dealers")
-        binding.pieChart.animateY(3000)
-
-        val legend: Legend = binding.pieChart.legend
-        legend.position = Legend.LegendPosition.LEFT_OF_CHART
-
-    }
 
 }

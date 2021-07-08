@@ -1,24 +1,25 @@
 package it.mspc.vaccinedata.ui.home
 
+import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import it.mspc.vaccinedata.data.AnagraficaSummary
-import it.mspc.vaccinedata.data.Platea
-import it.mspc.vaccinedata.data.PuntiSommTipo
 import it.mspc.vaccinedata.databinding.FragmentHomeBinding
-import it.mspc.vaccinedata.utilites.manageFile
+import it.mspc.vaccinedata.utilities.ManageFile
 import org.json.JSONException
-import java.io.File
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 
 class HomeFragment : Fragment() {
@@ -43,15 +44,16 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        var manage = manageFile(requireContext())
+        var manage = ManageFile(requireContext())
 
         mQueue = Volley.newRequestQueue(requireContext())
 
+        animationFlower()
         //anagraficaParse()
         //plateaParse()
-        //updateProgressBar()
-        //puntiPars()
-        //puntiTipoPars()
+        //puntiParse()
+        //puntiTipoParse()
+        getDate()
         return root
     }
 
@@ -59,62 +61,84 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    private var ana = ArrayList<AnagraficaSummary>()
+
     var tot = 0
     var population = 0
 
+    fun animationFlower(){
+        val rotate = RotateAnimation(
+            0F,
+            180F,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotate.duration = 5000
+        rotate.interpolator = LinearInterpolator()
+        rotate.fillAfter = true
+
+        val image: ImageView? = binding.ivFlower
+
+        if (image != null) {
+            image.startAnimation(rotate)
+        }
+    }
+/*
+    private var ana = ArrayList<AnagraficaSummary>()
     private fun anagraficaParse() {
         //parse del file json contenente il summary dell'anagrafica sui vaccini
-        var manage = manageFile(requireContext())
-        var out = manage.readFileAna()
+        val manage = ManageFile(requireContext())
+        val out = manage.readFileAna()
         ana = manage.parseFileAna(out)
     }
 
-    private var platea = ArrayList<Platea>()
+   private var platea = ArrayList<Platea>()
     private fun plateaParse() {
-        //parse del file json per ottenere il totale della popolazione italiana aggiornata
-        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        var manage = manageFile(requireContext())
-        var out = manage.readFilePlatea()
+        //parse del file json per ottenere la platea
+        val manage = ManageFile(requireContext())
+        val out = manage.readFilePlatea()
         platea = manage.parseFilePlatea(out)
     }
+
+    private var punti = ArrayList<PuntiSomministrazione>()
+    private fun puntiParse(){
+        //parse del file json per ottenere i punti di somministrazione
+        val manage = ManageFile(requireContext())
+        val out = manage.readFilePunti()
+        punti = manage.parseFilePunti(out)
+    }
+
     private var puntiTipo = ArrayList<PuntiSommTipo>()
-    private fun puntiTipoPars() {
-        //parse del file json per ottenere il totale della popolazione italiana aggiornata
-        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        var manage = manageFile(requireContext())
-        var out = manage.readFilePuntiTipo()
+    private fun puntiTipoParse() {
+        //parse del file json per ottenere la tipologia dei punti di somministrazione
+        val manage = ManageFile(requireContext())
+        val out = manage.readFilePuntiTipo()
         puntiTipo = manage.parseFilePuntiTipo(out)
+    } */
+
+
+
+    fun getDate() {
+        //parse del file json contenente la data dell'ultimo aggiornamento effettuato sui dati
+        val url = "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/last-update-dataset.json"
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                try {
+                    val json = response.get("ultimo_aggiornamento")
+                    val d: ZonedDateTime = ZonedDateTime.parse(json.toString())
+                    val formatter: DateTimeFormatter =
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    date = formatter.format(d)
+                    binding.tvJson.append(date)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }) { error -> error.printStackTrace() }
+        mQueue!!.add(request)
     }
-
-    private fun getPopulation() {
-        //funzione per ottenere il totale della popolazione italiana
-        for (i in 0 until 167) {
-            population += platea[i].totale_popolazione
-        }
-    }
-
-    private fun getFullVaccine() {
-        //funzione per ottenere il totale delle persone vaccinate con entrambe le dosi
-        for (i in 0 until 8) {
-            tot += ana[i].seconda_dose
-        }
-    }
-
-    private fun updateProgressBar() {
-        //funzione che calcola la percentuale della popolazione italiana vaccinata e che aggiorna la progress bar
-        getPopulation()
-        getFullVaccine()
-        var vaccinated = (100 * tot) / population
-
-        binding.progressBar.progress = vaccinated
-        binding.tvProgress.text = "$vaccinated%"
-    }
-
-
-
-
-  //  https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/somministrazioni-vaccini-summary-latest.json
 
 }
 

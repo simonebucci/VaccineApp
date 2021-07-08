@@ -1,4 +1,4 @@
-package it.mspc.vaccinedata.utilites
+package it.mspc.vaccinedata.utilities
 
 import android.content.Context
 import com.google.gson.Gson
@@ -7,7 +7,7 @@ import it.mspc.vaccinedata.data.*
 import org.json.JSONObject
 import java.io.File
 
-public class manageFile(context: Context){
+public class ManageFile(context: Context){
 
     var mycontext = context
 
@@ -257,45 +257,6 @@ public class manageFile(context: Context){
         var gson = Gson()
 
         val sType = object : TypeToken<ArrayList<PuntiSommTipo>>() {}.type
-        return gson.fromJson(jsonArray.toString(), sType)
-    }
-
-    //////////////////////SomministrazioniLatest///////////////////////////////
-    fun saveFileSommLatest(jsonString: String): String{
-
-        val path = mycontext.getExternalFilesDir(null)
-
-        val folder = File(path, "jsondata")
-        if (!folder.exists()) {
-            folder.mkdirs()
-        }
-
-        println(folder.exists()) // you'll get true
-
-        val file = File(folder, "somm_latest.txt")
-        file.appendText(jsonString)
-        println("Somm_latest File saved!")
-        println(file.absolutePath)
-        val file2 = File(folder, "somm_latest.txt")
-        var out = ""
-        out = file2.readText()
-        println(out)
-        return out
-    }
-    fun readFileSommLatest(): String{
-        val path = mycontext.getExternalFilesDir(null)
-        val folder = File(path, "jsondata")
-        val file2 = File(folder, "somm_latest.txt")
-        var out = ""
-        out = file2.readText()
-        return out
-    }
-    fun parseFileSommLatest(out: String): ArrayList<SomministrazioniLatest> {
-        val json = JSONObject(out)
-        val jsonArray = json.getJSONArray("data")
-        var gson = Gson()
-
-        val sType = object : TypeToken<ArrayList<SomministrazioniLatest>>() {}.type
         return gson.fromJson(jsonArray.toString(), sType)
     }
 
