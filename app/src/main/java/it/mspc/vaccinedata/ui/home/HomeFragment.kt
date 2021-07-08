@@ -1,12 +1,9 @@
 package it.mspc.vaccinedata.ui.home
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
@@ -15,18 +12,12 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import it.mspc.vaccinedata.MainActivity
 import it.mspc.vaccinedata.data.AnagraficaSummary
 import it.mspc.vaccinedata.data.Platea
-import it.mspc.vaccinedata.data.VacciniSummary
 import it.mspc.vaccinedata.databinding.FragmentHomeBinding
 import it.mspc.vaccinedata.utilites.manageFile
 import org.json.JSONException
-import org.json.JSONObject
 import java.io.File
-import java.lang.Thread.sleep
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 
 class HomeFragment : Fragment() {
@@ -53,17 +44,11 @@ class HomeFragment : Fragment() {
 
         var manage = manageFile(requireContext())
 
-        binding.btnRefresh.setOnClickListener {
-            getPopulation()
-            getFullVaccine()
-        }
-
         mQueue = Volley.newRequestQueue(requireContext())
 
-        binding.tvJson.append(manage.readFileUpdate())
-        jsonParse()
-        jsonParsePopulation()
-        file()
+        //anagraficaParse()
+        //plateaParse()
+        //updateProgressBar()
         return root
     }
 
@@ -71,56 +56,24 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    private var anagraficaSummary = ArrayList<AnagraficaSummary>()
+    private var ana = ArrayList<AnagraficaSummary>()
     var tot = 0
     var population = 0
-    var one = 0
 
-    private fun jsonParse() {
+    private fun anagraficaParse() {
         //parse del file json contenente il summary dell'anagrafica sui vaccini
-
-        val request = JsonObjectRequest(
-            Request.Method.GET,
-            "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/anagrafica-vaccini-summary-latest.json",
-            null,
-            { response ->
-                try {
-                    val jsonArray = response.getJSONArray("data")
-
-                    var gson = Gson()
-
-                    val sType = object : TypeToken<ArrayList<AnagraficaSummary>>() {}.type
-                    anagraficaSummary = gson.fromJson(jsonArray.toString(), sType)
-
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }) { error -> error.printStackTrace() }
-        mQueue!!.add(request)
+        var manage = manageFile(requireContext())
+        var out = manage.readFileAna()
+        ana = manage.parseFileAna(out)
     }
 
     private var platea = ArrayList<Platea>()
-    private fun jsonParsePopulation() {
+    private fun plateaParse() {
         //parse del file json per ottenere il totale della popolazione italiana aggiornata
-        val request = JsonObjectRequest(
-            Request.Method.GET,
-            "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/platea.json",
-            null,
-            { response ->
-                try {
-                    val jsonArray = response.getJSONArray("data")
-
-                    var gsonPop = Gson()
-
-                    val sType = object : TypeToken<ArrayList<Platea>>() {}.type
-                    platea = gsonPop.fromJson(jsonArray.toString(), sType)
-                    updateProgressBar()
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }) { error -> error.printStackTrace() }
-        mQueue!!.add(request)
-
+        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        var manage = manageFile(requireContext())
+        var out = manage.readFilePlatea()
+        platea = manage.parseFilePlatea(out)
     }
 
     private fun getPopulation() {
@@ -133,7 +86,7 @@ class HomeFragment : Fragment() {
     private fun getFullVaccine() {
         //funzione per ottenere il totale delle persone vaccinate con entrambe le dosi
         for (i in 0 until 8) {
-            tot += anagraficaSummary[i].seconda_dose
+            tot += ana[i].seconda_dose
         }
     }
 
@@ -148,19 +101,6 @@ class HomeFragment : Fragment() {
     }
 
 
-
-    fun file() {
-        var manage = manageFile(requireContext())
-    val path = requireContext().getExternalFilesDir(null)
-    val folder = File(path, "jsondata")
-    val file2 = File(folder, "file_name.txt")
-        var out = ""
-        out = file2.readText()
-        manage.readFileUpdate()
-        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        var ana = manage.readFileAna(out)
-        //binding.tvJson.text = ana[0].seconda_dose.toString()
-    }
 
 
   //  https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/somministrazioni-vaccini-summary-latest.json
