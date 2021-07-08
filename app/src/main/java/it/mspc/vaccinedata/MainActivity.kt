@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     var file = response.toString()
 
                     //saveFile(file)
-                    readFile(saveFile(file))
+                    manage.readFileAna(saveFileAna(file))
                     val jsonArray = response.getJSONArray("data")
 
                     var gson = Gson()
@@ -157,6 +157,7 @@ class MainActivity : AppCompatActivity() {
         anagraficaSummary = gson.fromJson(jsonArray.toString(), sType)
         println("daniele ti amo"+anagraficaSummary[0].prima_dose)*/
     }
+
     fun saveFileUpdate(jsonString: String): String {
         val data: String = "vaccine"
         val path = this.getExternalFilesDir(null)
@@ -210,9 +211,5 @@ class MainActivity : AppCompatActivity() {
         return file
     }
 
-    fun getContext(): Context //Not accessible from Client
-    {
-        return getContext()
-    }
 
 }
