@@ -33,12 +33,13 @@ public class manageFile(context: Context){
         return out
     }
 
-    fun readFileUpdate(){
+    fun readFileUpdate(): String{
         val path = mycontext.getExternalFilesDir(null)
         val folder = File(path, "jsondata")
         val file = File(folder, "lastupdate.txt")
         var out = file.readText()
         println(out)
+        return out
     }
     fun deleteFileUpdate(){
         val path = mycontext.getExternalFilesDir(null)
@@ -83,14 +84,14 @@ public class manageFile(context: Context){
         println("daniele ti amo"+anagraficaSummary[0].prima_dose)*/
     }
 
-    fun readFileAna(out: String){
+    fun readFileAna(out: String): ArrayList<AnagraficaSummary>{
         val json =  JSONObject(out)
         val jsonArray = json.getJSONArray("data")
         var gson = Gson()
 
         val sType = object : TypeToken<ArrayList<AnagraficaSummary>>() {}.type
-        anagraficaSummary = gson.fromJson(jsonArray.toString(), sType)
-        println("daniele ti amo"+anagraficaSummary[0].prima_dose)
+        var anagraficaSummary: ArrayList<AnagraficaSummary> = gson.fromJson(jsonArray.toString(), sType)
+        return anagraficaSummary
     }
 
 }

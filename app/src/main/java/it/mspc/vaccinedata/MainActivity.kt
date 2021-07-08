@@ -71,7 +71,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-    lateinit var anagraficaSummary: ArrayList<AnagraficaSummary>
 
 
     private fun jsonParse() {
@@ -84,14 +83,14 @@ class MainActivity : AppCompatActivity() {
                     var file = response.toString()
 
                     //saveFile(file)
-                    manage.readFileAna(saveFileAna(file))
-                    val jsonArray = response.getJSONArray("data")
+                    manage.readFileAna(manage.saveFileAna(file))
+                    /*val jsonArray = response.getJSONArray("data")
 
                     var gson = Gson()
 
                     val sType = object : TypeToken<ArrayList<AnagraficaSummary>>() {}.type
                     anagraficaSummary = gson.fromJson(jsonArray.toString(), sType)
-
+                    */
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
@@ -115,8 +114,8 @@ class MainActivity : AppCompatActivity() {
                         DateTimeFormatter.ofPattern("dd/MM/yyyy")
                     var date = formatter.format(d)
                     //if file exists check for updates, if first time save data//
-                    if(openFileUpdate().exists()) {
-                        if (readFileUpdate().toString() != date) {
+                    if(manage.openFileUpdate().exists()) {
+                        if (manage.readFileUpdate() != date) {
                             manage.deleteFileUpdate()
                             manage.saveFileUpdate(date)
                         }
@@ -130,7 +129,7 @@ class MainActivity : AppCompatActivity() {
             }) { error -> error.printStackTrace() }
         mQueue!!.add(request)
     }
-
+/*
     fun saveFile(jsonString: String): String{
         val data: String = "vaccine"
         val path = this.getExternalFilesDir(null)
@@ -210,6 +209,6 @@ class MainActivity : AppCompatActivity() {
         val file = File(folder, "lastupdate.txt")
         return file
     }
-
+*/
 
 }

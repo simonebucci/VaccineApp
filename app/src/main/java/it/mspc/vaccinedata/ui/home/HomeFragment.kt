@@ -51,6 +51,8 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        var manage = manageFile(requireContext())
+
         binding.btnRefresh.setOnClickListener {
             getPopulation()
             getFullVaccine()
@@ -58,9 +60,9 @@ class HomeFragment : Fragment() {
 
         mQueue = Volley.newRequestQueue(requireContext())
 
+        binding.tvJson.append(manage.readFileUpdate())
         jsonParse()
         jsonParsePopulation()
-        lastUpdateParse()
         file()
         return root
     }
@@ -69,9 +71,7 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
-    lateinit var anagraficaSummary: ArrayList<AnagraficaSummary>
+    private var anagraficaSummary = ArrayList<AnagraficaSummary>()
     var tot = 0
     var population = 0
     var one = 0
@@ -148,28 +148,6 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun lastUpdateParse() {
-        //parse del file json contenente la data dell'ultimo aggiornamento effettuato sui dati
-
-        val url =
-            "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/last-update-dataset.json"
-
-        val request = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            { response ->
-                try {
-                    val json = response.get("ultimo_aggiornamento")
-                    val d: ZonedDateTime = ZonedDateTime.parse(json.toString())
-                    val formatter: DateTimeFormatter =
-                        DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                    date = formatter.format(d)
-                    binding.tvJson.append(date)
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }) { error -> error.printStackTrace() }
-        mQueue!!.add(request)
-    }
 
     fun file() {
         var manage = manageFile(requireContext())
@@ -180,8 +158,8 @@ class HomeFragment : Fragment() {
         out = file2.readText()
         manage.readFileUpdate()
         println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    //gianfredo.readFile(out)
-      //  binding.tvJson.text = anagraficaSummary[0].seconda_dose.toString()
+        var ana = manage.readFileAna(out)
+        //binding.tvJson.text = ana[0].seconda_dose.toString()
     }
 
 
