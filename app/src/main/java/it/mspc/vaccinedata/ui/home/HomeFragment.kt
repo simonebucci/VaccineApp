@@ -171,9 +171,8 @@ class HomeFragment : Fragment() {
         mQueue!!.add(request)
     }
 
-    val manage = manageFile(requireContext())
-    //private lateinit var gianfredo: MainActivity
     fun file() {
+        var manage = manageFile(requireContext())
     val path = requireContext().getExternalFilesDir(null)
     val folder = File(path, "jsondata")
     val file2 = File(folder, "file_name.txt")

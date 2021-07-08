@@ -7,9 +7,11 @@ import java.io.File
 
 public class manageFile(context: Context){
 
+    var mycontext = context
+
     fun saveFileUpdate(jsonString: String): String {
         val data: String = "vaccine"
-        val path =  requireContext().getExternalFilesDir(null)
+        val path =  mycontext.getExternalFilesDir(null)
 
         val folder = File(path, "jsondata")
         folder.mkdirs()
@@ -28,14 +30,14 @@ public class manageFile(context: Context){
     }
 
     fun readFileUpdate(){
-        val path = context.getExternalFilesDir(null)
+        val path = mycontext.getExternalFilesDir(null)
         val folder = File(path, "jsondata")
         val file = File(folder, "lastupdate.txt")
         var out = file.readText()
         println(out)
     }
     fun deleteFileUpdate(){
-        val path = context.getExternalFilesDir(null)
+        val path = mycontext.getExternalFilesDir(null)
         val folder = File(path, "jsondata")
         val file = File(folder, "lastupdate.txt")
         file.delete()
@@ -44,7 +46,7 @@ public class manageFile(context: Context){
     }
 
     fun openFileUpdate(): File{
-        val path = context.getExternalFilesDir(null)
+        val path = mycontext.getExternalFilesDir(null)
         val folder = File(path, "jsondata")
         val file = File(folder, "lastupdate.txt")
         return file

@@ -19,6 +19,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import it.mspc.vaccinedata.data.AnagraficaSummary
 import it.mspc.vaccinedata.databinding.ActivityMainBinding
+import it.mspc.vaccinedata.utilites.manageFile
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var mQueue: RequestQueue? = null
+    var manage = manageFile(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,11 +117,11 @@ class MainActivity : AppCompatActivity() {
                     //if file exists check for updates, if first time save data//
                     if(openFileUpdate().exists()) {
                         if (readFileUpdate().toString() != date) {
-                            deleteFileUpdate()
-                            saveFileUpdate(date)
+                            manage.deleteFileUpdate()
+                            manage.saveFileUpdate(date)
                         }
                     }else{
-                        saveFileUpdate(date)
+                        manage.saveFileUpdate(date)
                     }
                     ////////////////////////////////////////////////////////////
                 } catch (e: JSONException) {
