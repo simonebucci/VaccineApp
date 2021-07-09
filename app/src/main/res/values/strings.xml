@@ -8,16 +8,22 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home" translatable="false">Home</string>
-    <string name="menu_gallery" translatable="false">Gallery</string>
+    <string name="menu_vaccini">Vaccine</string>
     <string name="menu_delivery">Delivery</string>
+    <string name="menu_appuntamento">My Appointment</string>
     <string name="menu_settings">Settings</string>
 
 
-    <string name="title_vaccinated">Italian Vaccinated Population</string>
+    <string name="title_vaccinated">Italian Full Vaccinated Population</string>
     <string name="last_update">Last Update:</string>
     <string name="title_vaccine">Vaccines delivered from providers</string>
     <string name="title_onevaccine">Vaccinated Population with at least one inoculation</string>
     <string name="title_pie">Delivered vs Inoculated</string>
+    <string name="pie_inoculated">Inoculated</string>
+    <string name="pie_delivered">Delivered</string>
+    <string name="pie_one">One Inoculation</string>
+    <string name="pie_two">Two Inoculation</string>
+
     <!-- Preference Titles -->
     <string name="credits_header">Credits</string>
 
@@ -37,4 +43,23 @@
     <string name="system_enum" translatable="false">0</string>
     <string name="light_enum" translatable="false">1</string>
     <string name="dark_enum" translatable="false">2</string>
+
+    <!-- appointment strings -->
+    <string name="app_datef">First Inoculation date: </string>
+    <string name="app_hourf">First Inoculation hour: </string>
+    <string name="app_dates">Second Inoculation date: </string>
+    <string name="app_hours">Second Inoculation hour: </string>
+    <string name="app_loc">Location: </string>
+    <string name="app_save">Save</string>
+    <string name="app_clear">Clear</string>
+    <string name="hint_datef">First Inoculation date</string>
+    <string name="hint_hourf">First Inoculation hour</string>
+    <string name="hint_dates">Second Inoculation date</string>
+    <string name="hint_hours">Second Inoculation hour</string>
+    <string name="hint_loc">Location</string>
+    <string name="app_alert">Are you sure you want to delete your appointment?</string>
+    <string name="app_yes">Yes</string>
+    <string name="app_no" translatable="false">No</string>
+
+
 </resources>

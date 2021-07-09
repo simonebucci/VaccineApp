@@ -46,9 +46,6 @@ class DeliveryFragment : Fragment() {
 
         mQueue = Volley.newRequestQueue(requireContext())
 
-
-
-
         vacciniParse()
         consegneParse()
         getDealer()
@@ -102,15 +99,15 @@ class DeliveryFragment : Fragment() {
 
     private fun setPieChart() {
         val xValues = ArrayList<String>()
-        xValues.add("Delivered")
-        xValues.add("Inoculated")
+        xValues.add(resources.getString(R.string.pie_delivered))
+        xValues.add(resources.getString(R.string.pie_inoculated))
 
         var d = getDelivered()
         var s = getShotted()
 
         val pieChartEntry = ArrayList<Entry>()
         pieChartEntry.add(Entry(d.toFloat(),0))
-        pieChartEntry.add(Entry(s.toFloat(),0))
+        pieChartEntry.add(Entry(s.toFloat(),1))
 
 
 
@@ -122,11 +119,13 @@ class DeliveryFragment : Fragment() {
 
         dataSet.setColors(colors)
         val data = PieData(xValues,dataSet)
+        data.setValueTextSize(10f)
+        data.setValueTextColor(Color.BLACK)
         binding.pieChart2.data = data
-        binding.pieChart2.centerTextRadiusPercent = 0f
-        binding.pieChart2.isDrawHoleEnabled = false
+        binding.pieChart2.centerTextRadiusPercent = 20f
+        binding.pieChart2.isDrawHoleEnabled = true
         binding.pieChart2.legend.isEnabled = true
-        binding.pieChart2.setDescription("Delivered & Inoculated")
+        binding.pieChart2.setDescription("")
         binding.pieChart2.animateY(3000)
 
         val legend: Legend = binding.pieChart2.legend
@@ -211,7 +210,7 @@ class DeliveryFragment : Fragment() {
         binding.barChart2.data = data
         binding.barChart2.setBackgroundColor(resources.getColor(R.color.white))
         binding.barChart2.animateXY(3000,3000)
-
+        binding.barChart2.setDescription("")
     }
 
 

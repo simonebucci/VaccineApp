@@ -23,7 +23,6 @@ class Splash: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_activity)
 
-       // animationFlower()
         Handler().postDelayed({
             // This method will be executed once the timer is over
             // Start your app main activity

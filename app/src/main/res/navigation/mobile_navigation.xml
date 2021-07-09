@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="it.mspc.vaccinedata.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:name="it.mspc.vaccinedata.ui.vaccini.VacciniFragment"
+        android:label="@string/menu_vaccini"
+        tools:layout="@layout/fragment_vaccini" />
 
     <fragment
         android:id="@+id/nav_delivery"
@@ -27,4 +27,9 @@
         android:name="it.mspc.vaccinedata.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/nav_appuntamento"
+        android:name="it.mspc.vaccinedata.ui.appuntamento.AppuntamentoFragment"
+        android:label="@string/menu_appuntamento"
+        tools:layout="@layout/fragment_list" />
 </navigation>

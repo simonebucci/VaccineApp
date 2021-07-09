@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">VaccineData</string>
     <string name="action_settings">Impostazioni</string>
-    <string name="title_vaccinated">Popolazione Italiana Vaccinata</string>
+    <string name="title_vaccinated">Popolazione Italiana Vaccinata con due dosi</string>
     <string name="nav_header_title">Dati vaccini</string>
     <string name="nav_header_subtitle">per COVID-19</string>
     <string name="last_update">Ultimo Aggiornamento:</string>
@@ -12,4 +12,24 @@
     <string name="menu_delivery">Consegne</string>
     <string name="credits_header">Crediti</string>
     <string name="title_pie">Consegnate vs Somministrate</string>
+    <string name="pie_inoculated">Somministrate</string>
+    <string name="pie_delivered">Consegnate</string>
+    <string name="menu_appuntamento">Il mio Appuntamento</string>
+    <string name="app_datef">"Data prima dose: "</string>
+    <string name="app_hourf">"Orario prima dose: "</string>
+    <string name="app_dates">"Data seconda dose: "</string>
+    <string name="app_hours">Orario seconda dose:</string>
+    <string name="app_loc">"Luogo: "</string>
+    <string name="app_save">Salva</string>
+    <string name="app_clear">Cancella</string>
+    <string name="hint_datef">Data prima dose</string>
+    <string name="hint_hourf">Orario prima dose</string>
+    <string name="hint_dates">Data seconda dose</string>
+    <string name="hint_hours">Orario seconda dose</string>
+    <string name="hint_loc">Luogo</string>
+    <string name="app_alert">Sei sicuro di voler cancellare il tuo appuntamento?</string>
+    <string name="app_yes">Si</string>
+    <string name="menu_vaccini">Vaccini</string>
+    <string name="pie_one">Prima dose</string>
+    <string name="pie_two">Seconda dose</string>
 </resources>
