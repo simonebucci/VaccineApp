@@ -32,4 +32,8 @@
     <string name="menu_vaccini">Vaccini</string>
     <string name="pie_one">Prima dose</string>
     <string name="pie_two">Seconda dose</string>
+    <string name="name_region">"Nome regione: "</string>
+    <string name="del_region">"Dosi consegnate: "</string>
+    <string name="ino_region">"Dosi somministrate: "</string>
+    <string name="perc_region">"Percentuale di dosi somministrate: "</string>
 </resources>

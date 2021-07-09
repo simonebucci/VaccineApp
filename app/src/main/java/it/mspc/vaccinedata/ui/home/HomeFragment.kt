@@ -69,8 +69,6 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    var tot = 0
-    var population = 0
 
     fun animationFlower(){
         val rotate = RotateAnimation(
@@ -91,39 +89,6 @@ class HomeFragment : Fragment() {
             image.startAnimation(rotate)
         }
     }
-/*
-    private var ana = ArrayList<AnagraficaSummary>()
-    private fun anagraficaParse() {
-        //parse del file json contenente il summary dell'anagrafica sui vaccini
-        val manage = ManageFile(requireContext())
-        val out = manage.readFileAna()
-        ana = manage.parseFileAna(out)
-    }
-
-   private var platea = ArrayList<Platea>()
-    private fun plateaParse() {
-        //parse del file json per ottenere la platea
-        val manage = ManageFile(requireContext())
-        val out = manage.readFilePlatea()
-        platea = manage.parseFilePlatea(out)
-    }
-
-    private var punti = ArrayList<PuntiSomministrazione>()
-    private fun puntiParse(){
-        //parse del file json per ottenere i punti di somministrazione
-        val manage = ManageFile(requireContext())
-        val out = manage.readFilePunti()
-        punti = manage.parseFilePunti(out)
-    }
-
-    private var puntiTipo = ArrayList<PuntiSommTipo>()
-    private fun puntiTipoParse() {
-        //parse del file json per ottenere la tipologia dei punti di somministrazione
-        val manage = ManageFile(requireContext())
-        val out = manage.readFilePuntiTipo()
-        puntiTipo = manage.parseFilePuntiTipo(out)
-    } */
-
 
 
     fun getDate() {
