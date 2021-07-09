@@ -41,6 +41,9 @@ class RegionDetails: AppCompatActivity() {
     private var del = 0
     private var ino = 0
     private var per = 0
+    var del1 = 0
+    var ino1 = 0
+    var per1 = 0
 
     fun getRegion(region: String){
         for(i in 0 until vacciniSummary.size){
@@ -54,8 +57,45 @@ class RegionDetails: AppCompatActivity() {
                 per = vacciniSummary[i].percentuale_somministrazione.toInt()
                 setPieChart()
                 updateProgressBar()
-            }else{
+            }else if(region == "Valle d'Aosta"){
+                for(j in 0 until vacciniSummary.size){
+                    if(vacciniSummary[i].index == 19) {
+                        binding.tvName.text = resources.getString(R.string.name_region) + vacciniSummary[i].nome_area
+                        binding.tvDel.text = resources.getString(R.string.del_region) + vacciniSummary[i].dosi_consegnate.toString()
+                        binding.tvIno.text = resources.getString(R.string.ino_region) + vacciniSummary[i].dosi_somministrate.toString()
+                        binding.tvPerc.text = resources.getString(R.string.perc_region) + vacciniSummary[i].percentuale_somministrazione.toString()
+                        del = vacciniSummary[i].dosi_consegnate
+                        ino = vacciniSummary[i].dosi_somministrate
+                        per = vacciniSummary[i].percentuale_somministrazione.toInt()
+                        setPieChart()
+                        updateProgressBar()
+                    }
+                }
+            }else if(region == "Trentino Alto Adige"){
+                for(j in 0 until vacciniSummary.size){
+                    if(vacciniSummary[i].index == 12) {
+                        binding.tvName.text = resources.getString(R.string.name_region) + "Trentino Alto Adige"
+                        binding.tvDel.text = resources.getString(R.string.del_region) + vacciniSummary[i].dosi_consegnate.toString()
+                        binding.tvIno.text = resources.getString(R.string.ino_region) + vacciniSummary[i].dosi_somministrate.toString()
+                        binding.tvPerc.text = resources.getString(R.string.perc_region) + vacciniSummary[i].percentuale_somministrazione.toString()
+                        var del1 = vacciniSummary[i].dosi_consegnate
+                        var ino1 = vacciniSummary[i].dosi_somministrate
+                        var per1 = vacciniSummary[i].percentuale_somministrazione.toInt()
+                    }
+                    if(vacciniSummary[i].index == 11) {
+                        binding.tvDel.text = resources.getString(R.string.del_region) + vacciniSummary[i].dosi_consegnate.toString()
+                        binding.tvIno.text = resources.getString(R.string.ino_region) + vacciniSummary[i].dosi_somministrate.toString()
+                        binding.tvPerc.text = resources.getString(R.string.perc_region) + vacciniSummary[i].percentuale_somministrazione.toString()
+                        var del2 = vacciniSummary[i].dosi_consegnate
+                        var ino2 = vacciniSummary[i].dosi_somministrate
+                        del = del1 + del2
+                        ino = ino1 + ino2
+                        per = (ino*100)/del
 
+                        setPieChart()
+                        updateProgressBar()
+                    }
+                }
             }
         }
     }
