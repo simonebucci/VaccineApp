@@ -13,7 +13,6 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.formatter.PercentFormatter
 import it.mspc.vaccinedata.R
 import it.mspc.vaccinedata.data.AnagraficaSummary
 import it.mspc.vaccinedata.data.Platea
