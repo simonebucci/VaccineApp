@@ -10,12 +10,14 @@ import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import it.mspc.vaccinedata.R
 import it.mspc.vaccinedata.databinding.FragmentHomeBinding
-import it.mspc.vaccinedata.utilities.ManageFile
+import it.mspc.vaccinedata.utilities.FileManager
 import org.json.JSONException
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -27,6 +29,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private var mQueue: RequestQueue? = null
     private lateinit var homeViewModel: HomeViewModel
+    var region = arrayOf<String>()
+    var images = arrayOf<String>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -42,8 +46,8 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        var manage = ManageFile(requireContext())
+        region = resources.getStringArray(R.array.regionName)
+        images = resources.getStringArray(R.array.regionImages)
 
         mQueue = Volley.newRequestQueue(requireContext())
 
@@ -51,11 +55,11 @@ class HomeFragment : Fragment() {
             animationFlower()
         }
 
+        val adapter = RecyclerAdapter(region,images)
+        binding.recycleView?.layoutManager = LinearLayoutManager(requireContext())
+        binding.recycleView?.adapter = adapter
+
         animationFlower()
-        //anagraficaParse()
-        //plateaParse()
-        //puntiParse()
-        //puntiTipoParse()
         getDate()
         return root
     }

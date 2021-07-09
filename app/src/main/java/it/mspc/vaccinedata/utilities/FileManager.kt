@@ -7,7 +7,7 @@ import it.mspc.vaccinedata.data.*
 import org.json.JSONObject
 import java.io.File
 
-public class ManageFile(context: Context){
+public class FileManager(context: Context){
 
     var mycontext = context
 

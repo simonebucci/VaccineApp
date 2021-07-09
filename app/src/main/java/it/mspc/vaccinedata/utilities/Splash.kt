@@ -16,8 +16,6 @@ import it.mspc.vaccinedata.R
 class Splash: AppCompatActivity() {
     // This is the loading time of the splash screen
     private val SPLASH_TIME_OUT: Long = 1000 // 1 sec
-    val downloadManager = DownloadManager(this)
-    var download = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

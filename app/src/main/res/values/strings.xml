@@ -61,5 +61,51 @@
     <string name="app_yes">Yes</string>
     <string name="app_no" translatable="false">No</string>
 
+    <!-- Recycle View Regioni -->
+    <string-array name="regionName">
+        <item>Abruzzo</item>
+        <item>Basilicata</item>
+        <item>Calabria</item>
+        <item>Campania</item>
+        <item>Emilia Romagna</item>
+        <item>Friuli Venezia Giulia</item>
+        <item>Lazio</item>
+        <item>Liguria</item>
+        <item>Lombardia</item>
+        <item>Marche</item>
+        <item>Molise</item>
+        <item>Piemonte</item>
+        <item>Puglia</item>
+        <item>Sardegna</item>
+        <item>Sicilia</item>
+        <item>Toscana</item>
+        <item>Trentino Alto Adige</item>
+        <item>Umbria</item>
+        <item>Valle d\'Aosta</item>
+        <item>Veneto</item>
+    </string-array>
+
+    <string-array name="regionImages">
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Abruzzo.svg/320px-Flag_of_Abruzzo.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Flag_of_Basilicata.svg/320px-Flag_of_Basilicata.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Flag_of_Calabria.svg/320px-Flag_of_Calabria.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Flag_of_Campania.svg/320px-Flag_of_Campania.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Emilia-Romagna_%28de_facto%29.svg/320px-Flag_of_Emilia-Romagna_%28de_facto%29.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/9/93/Flag_of_Friuli-Venezia_Giulia.jpg</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Flag_of_Lazio.svg/320px-Flag_of_Lazio.svg.jpg</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Liguria.svg/320px-Flag_of_Liguria.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Lombardy.svg/320px-Flag_of_Lombardy.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Flag_of_Marche.svg/320px-Flag_of_Marche.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Molise.svg/320px-Flag_of_Molise.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Piedmont.svg/320px-Flag_of_Piedmont.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Apulia.svg/320px-Flag_of_Apulia.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Sardinia.svg/320px-Flag_of_Sardinia.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_Sicily.svg/320px-Flag_of_Sicily.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Tuscany.svg/320px-Flag_of_Tuscany.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Flag_of_Trentino-South_Tyrol.svg/320px-Flag_of_Trentino-South_Tyrol.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Flag_of_Umbria.svg/320px-Flag_of_Umbria.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Flag_of_Valle_d%27Aosta.svg/320px-Flag_of_Valle_d%27Aosta.svg.png</item>
+        <item>https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Flag_of_Veneto.svg/320px-Flag_of_Veneto.svg.png</item>
+    </string-array>
 
 </resources>

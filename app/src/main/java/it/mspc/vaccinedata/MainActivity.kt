@@ -1,7 +1,6 @@
 package it.mspc.vaccinedata
 
 import android.os.Bundle
-import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -15,8 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.navigation.NavigationView
 import it.mspc.vaccinedata.databinding.ActivityMainBinding
-import it.mspc.vaccinedata.utilities.DownloadManager
-import it.mspc.vaccinedata.utilities.ManageFile
+import it.mspc.vaccinedata.utilities.FileManager
 import org.json.JSONException
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -27,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var mQueue: RequestQueue? = null
-    var manage = ManageFile(this)
+    var manage = FileManager(this)
     var download = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {

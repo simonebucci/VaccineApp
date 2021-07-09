@@ -13,11 +13,16 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import it.mspc.vaccinedata.R
 import it.mspc.vaccinedata.data.AnagraficaSummary
 import it.mspc.vaccinedata.data.Platea
+import it.mspc.vaccinedata.data.appuntamento.Appuntamento
 import it.mspc.vaccinedata.databinding.FragmentVacciniBinding
-import it.mspc.vaccinedata.utilities.ManageFile
+import it.mspc.vaccinedata.utilities.FileManager
+import org.json.JSONObject
+import java.io.File
 
 
 class VacciniFragment : Fragment() {
@@ -58,7 +63,7 @@ class VacciniFragment : Fragment() {
     private var anagraficaSummary = ArrayList<AnagraficaSummary>()
     private fun anagraficaParse() {
         //parse del file json contenente il summary dell'anagrafica sui vaccini
-        val manage = ManageFile(requireContext())
+        val manage = FileManager(requireContext())
         val out = manage.readFileAna()
         anagraficaSummary = manage.parseFileAna(out)
     }
@@ -66,7 +71,7 @@ class VacciniFragment : Fragment() {
     private var platea = ArrayList<Platea>()
     private fun plateaParse() {
         //parse del file json per ottenere la platea
-        val manage = ManageFile(requireContext())
+        val manage = FileManager(requireContext())
         val out = manage.readFilePlatea()
         platea = manage.parseFilePlatea(out)
     }
@@ -148,6 +153,22 @@ class VacciniFragment : Fragment() {
 
     }
 
+    fun readFile(): String{
+        val path =  requireContext().getExternalFilesDir(null)
+        val folder = File(path, "jsondata")
+        val file = File(folder, "appuntamento.txt")
+        var out = file.readText()
+        println(out)
+        return out
+    }
+
+    fun parseFile(out: String): Appuntamento {
+        val json = JSONObject(out)
+        var gson = Gson()
+
+        val sType = object : TypeToken<Appuntamento>() {}.type
+        return gson.fromJson(json.toString(), sType)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

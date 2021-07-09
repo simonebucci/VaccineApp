@@ -9,17 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
-import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import com.github.mikephil.charting.utils.ColorTemplate
 import it.mspc.vaccinedata.R
 import it.mspc.vaccinedata.data.ConsegneVaccini
 import it.mspc.vaccinedata.data.VacciniSummary
 import it.mspc.vaccinedata.databinding.FragmentDeliveryBinding
-import it.mspc.vaccinedata.utilities.ManageFile
-import java.util.*
+import it.mspc.vaccinedata.utilities.FileManager
 import kotlin.collections.ArrayList
 
 
@@ -63,7 +60,7 @@ class DeliveryFragment : Fragment() {
     private var consegneSummary = ArrayList<ConsegneVaccini>()
     private fun consegneParse() {
         //parse del file json contenente le consegne dei vaccini
-        val manage = ManageFile(requireContext())
+        val manage = FileManager(requireContext())
         val out = manage.readFileConsegne()
         consegneSummary = manage.parseFileConsegne(out)
     }
@@ -71,7 +68,7 @@ class DeliveryFragment : Fragment() {
     private var vacciniSummary = ArrayList<VacciniSummary>()
     private fun vacciniParse() {
         //parse del file json contenente il summary dei vaccini
-        val manage = ManageFile(requireContext())
+        val manage = FileManager(requireContext())
         val out = manage.readFileVacciniSumm()
         vacciniSummary = manage.parseFileVacciniSumm(out)
         getDelivered()

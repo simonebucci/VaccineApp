@@ -14,7 +14,8 @@
     <color name="red">#ff0000</color>
     <color name="darkorange">#ff8c00</color>
     <color name="purple_700">#FF3700B3</color>
-
+    <color name="sky_blue_crayola">#8DE5F7 </color>
+    <color name="light_Cyan">#CCE0DF</color>
 
     <color name="grey">#d3d3d3</color>
     <color name="colorPrimary">#008577</color>
